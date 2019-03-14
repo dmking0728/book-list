@@ -21,6 +21,28 @@ UI.prototype.addBookToList = function (book) {
   list.appendChild(row);
 }
 
+//show alert
+UI.prototype.showAlert = function(errorMessage, className) {
+//create div
+const div = document.createElement('div');
+//add class name
+div.className = `alert ${className}`;
+//add text
+div.appendChild(document.createTextNode(errorMessage));
+//when using insertBefore you need to get the parent of where you are placing the item and then get the itme where you wnat to place it before. it is a 2 step process.
+//get parent
+const container = document.querySelector('.container'); 
+//get form
+const form = document.querySelector('#book-form');
+//insert alert- takes in 2 params - the item u are inserting and the itme that you are placing it before. 
+container.insertBefore(div, form);
+
+//timeout after 3 secs
+setTimeout(function(){
+  document.querySelector('.alert').remove();
+}, 3000);
+}
+
 //Clear fields
 UI.prototype.clearFields = function(){
   document.getElementById('title').value = '';
@@ -41,10 +63,20 @@ document. getElementById('book-form').addEventListener('submit', function(e){
 
   //instantiate UI object
   const ui = new UI();
-
-  //add book to lsit
+  //validate reads if x equals nothing or ....
+  if(title === '' || author === '' || isbn === '') {
+    //error alert
+    ui.showAlert('Please fill in all fields', 'error');
+  } else {
+    //add book to lsit
   ui.addBookToList(book);
+
+  //alert success
+  ui.showAlert('Book Added', 'success');
+  //clear fields
   ui.clearFields();
+  }
+  
   e.preventDefault();
   
 });
