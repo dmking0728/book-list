@@ -43,6 +43,14 @@ setTimeout(function(){
 }, 3000);
 }
 
+//delete book
+UI.prototype.deleteBook = function(target) {
+  if(target.className === 'delete') {
+    //need to target parent dom first one up the dom chain is the td second one is the tr and then we remove it. this is called traversing the DOM
+    target.parentElement.parentElement.remove();
+  }
+}
+
 //Clear fields
 UI.prototype.clearFields = function(){
   document.getElementById('title').value = '';
@@ -52,7 +60,7 @@ UI.prototype.clearFields = function(){
 
 
 
-//event listeners - what do we want to do once user clciks submit? we need to get fields
+//event listeners for addbook- what do we want to do once user clciks submit? we need to get fields
 document. getElementById('book-form').addEventListener('submit', function(e){
   //grab input field stuff
   const title = document.getElementById('title').value,
@@ -79,4 +87,19 @@ document. getElementById('book-form').addEventListener('submit', function(e){
   
   e.preventDefault();
   
+});
+
+
+//event listener for delete
+document.getElementById('book-list').addEventListener('click', function(e){
+  //instantiate UI
+  const ui = new UI();
+
+  //call on prototype to perform its function
+  ui.deleteBook(e.target);
+
+  //show alert that it has been deleted
+  ui.showAlert('Book Removed', 'success');
+
+  e.preventDefault();
 });
